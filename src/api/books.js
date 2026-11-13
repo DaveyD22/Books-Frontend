@@ -16,6 +16,11 @@ const createBook = async (book) =>{
     return response.json();
 }
 
+const deleteBook = async (id) =>{
+    const response = await fetch(`${API_URL}/${id}`, {
+        method: "DELETE",
+    })
 
+}
 
-export {getBooks, createBook };
+export {getBooks, createBook, deleteBook };

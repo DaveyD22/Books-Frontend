@@ -1,5 +1,5 @@
 <script setup>
-import { createBook, getBooks } from '../api/books';
+import { createBook, deleteBook, getBooks } from '../api/books';
 
 
 </script>
@@ -27,6 +27,10 @@ import { createBook, getBooks } from '../api/books';
             },
             async submitCreateBook(){
                 await this.addBooks(this.newBook);
+            },
+            async removeBook(id){
+                await deleteBook(id);
+                await this.loadbooks();
             }
         },
         mounted(){
@@ -70,7 +74,9 @@ import { createBook, getBooks } from '../api/books';
                     <td class="">{{ book.title }}</td>
                     <td class="">{{ book.author }}</td>
                     <td class="">{{ book.year }}</td>
-                    <td class="">-</td>
+                    <td class="">
+                        <button @click="removeBook(book.id)" type="button">Torles</button>
+                    </td>
 
                 </tr>
             </tbody>
