@@ -1,5 +1,5 @@
 <script setup>
-import { getBooks } from '../api/books';
+import { createBook, getBooks } from '../api/books';
 
 
 </script>
@@ -9,12 +9,25 @@ import { getBooks } from '../api/books';
         data(){
             return{
                 books: [],
+                newBook:{
+                    title: "",
+                    author: "",
+                    year: 2000,
+
+                }
             };
         },
         methods:{
             async loadbooks(){
                 this.books = await getBooks();
             },
+            async addBooks(book){
+                await createBook(book);
+                await this.loadbooks();
+            },
+            async submitCreateBook(){
+                await this.addBooks(this.newBook);
+            }
         },
         mounted(){
             this.loadbooks();
@@ -24,6 +37,24 @@ import { getBooks } from '../api/books';
 <template>
     <main class="">
         <h1>Konyvtar Kezelo</h1>
+
+
+        <form @submit.prevent="submitCreateBook" class="w-full m-10 my-10 border-2 border-stone-200 p-3 flex flex-col">
+            <div><label for="title">Cim:</label>
+            <input v-model="newBook.title" type="text" name="title" /></div>
+
+            <div><label for="author">Szerzo:</label>
+            <input v-model="newBook.author" type="text" name="author" /></div>
+            
+            <div><label for="year">Year:</label>
+            <input v-model="newBook.year" type="number" name="year" /></div>
+            <button type="submit">Vegedvan</button>
+
+            
+        </form>
+        
+
+
 
         <table>
             <thead class="">
@@ -36,7 +67,7 @@ import { getBooks } from '../api/books';
             <tbody class="">
                 <tr v-for="book in books" :key="book.id" class="">
                     <td class="">{{ book.id }}</td>
-                    <td class=""{{ book.title }}></td>
+                    <td class="">{{ book.title }}</td>
                     <td class="">{{ book.author }}</td>
                     <td class="">{{ book.year }}</td>
                     <td class="">-</td>
